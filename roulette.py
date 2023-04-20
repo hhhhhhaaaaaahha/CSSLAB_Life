@@ -14,8 +14,10 @@ class Roulette(QWidget):
         self.mModified = True
         self.setGeometry(100, 100, 400, 400)
         self.setWindowTitle("Roulette")
+
         self.angle = 0
         self.counter = 1000000
+        self.spin_time = 100000
 
         self.timer = QTimer()
         self.timer.timeout.connect(self.onTimer)
@@ -64,13 +66,14 @@ class Roulette(QWidget):
 
     def startTimer(self):
         self.counter = 0
+        self.spin_time = random.randint(1000, 1500)
         self.timer.start(1)
 
     # def stopTimer(self):
     #     self.timer.stop()
 
     def onTimer(self):
-        if self.counter < 1000:
+        if self.counter < self.spin_time:
             self.counter += 1
             self.angle += 30
             self.mModified = True

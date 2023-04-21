@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QPushButton, QWidget, QVBoxLayout, QLabel
-from PyQt5.QtGui import QPainter, QColor, QBrush, QPen, QTransform, QPixmap
+from PyQt5.QtGui import QPainter, QColor, QBrush, QPen, QFont, QTransform, QPixmap
 from PyQt5.QtCore import Qt, QPoint, QRectF, QTimer, QPropertyAnimation
 import math
 import random
@@ -18,6 +18,8 @@ class Roulette(QWidget):
         self.angle = 0
         self.counter = 1000000
         self.spin_time = 100000
+        self.spin_angle = 30
+        self.decrease_angle = 0
 
         self.timer = QTimer()
         self.timer.timeout.connect(self.onTimer)
@@ -47,6 +49,7 @@ class Roulette(QWidget):
 
         # Define the colors and angles for each segment
         colors = [QColor(251, 140, 0), QColor(229, 57, 53), QColor(253, 216, 53)]
+
         angles = [0, 45, 90, 135, 180, 225, 270, 315]
 
         # Draw the segments
@@ -66,16 +69,22 @@ class Roulette(QWidget):
 
     def startTimer(self):
         self.counter = 0
-        self.spin_time = random.randint(1000, 1500)
+        self.spin_time = random.randint(2000, 2500)
+        self.spin_angle = 30
+        self.decrease_angle = self.spin_angle / ((self.spin_time // 7) * 6)
         self.timer.start(1)
-
-    # def stopTimer(self):
-    #     self.timer.stop()
 
     def onTimer(self):
         if self.counter < self.spin_time:
+            if math.ceil(self.spin_angle) == 0:
+                self.spin_angle = 1
+                self.decrease_angle = 0
+            if self.counter < (self.spin_time // 7):
+                self.angle += self.spin_angle
+            elif self.counter >= (self.spin_time // 7):
+                self.spin_angle -= self.decrease_angle
+                self.angle += math.ceil(self.spin_angle)
             self.counter += 1
-            self.angle += 30
             self.mModified = True
             self.update()
         else:

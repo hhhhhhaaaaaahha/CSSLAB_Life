@@ -1,10 +1,9 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QPushButton, QWidget, QVBoxLayout, QLabel
 from PyQt5.QtGui import QPainter, QColor, QBrush, QPen, QFont, QTransform, QPixmap
-from PyQt5.QtCore import Qt, QPoint, QRectF, QTimer, QPropertyAnimation
+from PyQt5.QtCore import Qt, QPoint, QPointF, QRectF, QTimer, QPropertyAnimation
 import math
 import random
-import time
 
 
 class Roulette(QWidget):
@@ -15,15 +14,18 @@ class Roulette(QWidget):
         self.setGeometry(100, 100, 400, 400)
         self.setWindowTitle("Roulette")
 
+        # spin-related variable
         self.angle = 0
+        self.decrease_angle = 0
         self.counter = 1000000
         self.spin_time = 100000
         self.spin_angle = 30
-        self.decrease_angle = 0
-
         self.timer = QTimer()
         self.timer.timeout.connect(self.onTimer)
-        self.timer.start(1)
+
+        # text-related variable
+        self.radius = 150
+        self.central_point = QPoint(192, 208)
 
         spin_button = QPushButton("Spin", self)
         spin_button.clicked.connect(self.startTimer)
@@ -49,7 +51,7 @@ class Roulette(QWidget):
 
         # Define the colors and angles for each segment
         colors = [QColor(251, 140, 0), QColor(229, 57, 53), QColor(253, 216, 53)]
-
+        text = ["A", "B", "C"]
         angles = [0, 45, 90, 135, 180, 225, 270, 315]
 
         # Draw the segments
@@ -57,15 +59,32 @@ class Roulette(QWidget):
             qp.setBrush(QBrush(colors[i % 3], Qt.SolidPattern))
             qp.drawPie(wheel_rect, angles[i] * 16 - self.angle, 45 * 16)
 
+            # Draw text
+            qp.save()
+            qp.scale(1, 1)
+            qp.setFont(QFont("Arial", 25))
+            # qp.rotate(45)
+            qp.drawText(
+                self.central_point.x() + (self.radius // 2),
+                self.central_point.x() - (self.radius // 2),
+                text[0],
+            )
+            qp.restore()
+            # qp.rotate(-45)
+
         # Draw the center point
-        qp.setPen(Qt.NoPen)
-        qp.setBrush(QBrush(QColor(117, 117, 117), Qt.SolidPattern))
-        center_point = QPoint(200, 200)
-        qp.drawEllipse(center_point, 60, 60)
-        qp.setBrush(QBrush(QColor(189, 189, 189), Qt.SolidPattern))
-        qp.drawEllipse(center_point, 35, 35)
-        qp.setBrush(QBrush(QColor(117, 117, 117), Qt.SolidPattern))
-        qp.drawEllipse(center_point, 25, 25)
+        # qp.setPen(Qt.NoPen)
+        # qp.setBrush(QBrush(QColor(117, 117, 117), Qt.SolidPattern))
+        # center_point = QPoint(200, 200)
+        # # qp.setBrush(QBrush(QColor(0, 0, 0), Qt.SolidPattern))
+        # # qp.drawEllipse(center_point, self.radius, self.radius)
+        # qp.drawEllipse(center_point, 60, 60)
+        # qp.setBrush(QBrush(QColor(117, 117, 117), Qt.SolidPattern))
+        # qp.setBrush(QBrush(QColor(189, 189, 189), Qt.SolidPattern))
+        # qp.drawEllipse(center_point, 35, 35)
+        # qp.setBrush(QBrush(QColor(117, 117, 117), Qt.SolidPattern))
+        # qp.drawEllipse(center_point, 25, 25)
+        #######
 
     def startTimer(self):
         self.counter = 0

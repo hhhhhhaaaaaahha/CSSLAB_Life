@@ -1,9 +1,10 @@
-import sys
-from PyQt5.QtWidgets import QApplication, QPushButton, QWidget, QVBoxLayout, QLabel
-from PyQt5.QtGui import QPainter, QColor, QBrush, QPen, QFont, QTransform, QPixmap
-from PyQt5.QtCore import Qt, QPoint, QPointF, QRectF, QTimer, QPropertyAnimation
+from PyQt5.QtCore import Qt, QPoint, QRectF, QTimer
+from PyQt5.QtGui import QPainter, QColor, QBrush, QPen, QFont
+from PyQt5.QtWidgets import QApplication, QPushButton, QWidget
 import math
+import numpy as np
 import random
+import sys
 
 
 class Roulette(QWidget):
@@ -24,7 +25,7 @@ class Roulette(QWidget):
         self.timer.timeout.connect(self.onTimer)
 
         # text-related variable
-        self.radius = 150
+        self.text_radius = 150
         self.central_point = QPoint(192, 208)
 
         spin_button = QPushButton("Spin", self)
@@ -35,56 +36,68 @@ class Roulette(QWidget):
             qp = QPainter()
             qp.begin(self)
             self.drawRoulette(qp)
-            qp.rotate(self.angle)
-            # qp.end()
             self.mModified = False
 
     def drawRoulette(self, qp):
         pen = QPen(
             QColor(0, 0, 0),
             1,
-        )  # Qt.SolidLine)
+        )
         qp.setPen(pen)
 
         # Define the bounding rectangle for the wheel
         wheel_rect = QRectF(10.0, 10.0, 380.0, 380.0)
 
         # Define the colors and angles for each segment
-        colors = [QColor(251, 140, 0), QColor(229, 57, 53), QColor(253, 216, 53)]
-        text = ["A", "B", "C"]
-        angles = [0, 45, 90, 135, 180, 225, 270, 315]
+        colors = [
+            QColor(251, 140, 0),
+            QColor(229, 57, 53),
+            QColor(253, 216, 53),
+            QColor(244, 81, 30),
+        ]
+        # Define optionns
+        option = ["A", "B", "C"]
+        angles = [60 * i for i in range(6)]
+        points = self.calTextCoord(len(angles))
 
         # Draw the segments
         for i in range(len(angles)):
-            qp.setBrush(QBrush(colors[i % 3], Qt.SolidPattern))
-            qp.drawPie(wheel_rect, angles[i] * 16 - self.angle, 45 * 16)
+            qp.setBrush(QBrush(colors[i % len(option)], Qt.SolidPattern))
+            qp.drawPie(wheel_rect, angles[i] * 16 - self.angle, 60 * 16)
 
-            # Draw text
+        # Draw text
+        for i in range(len(angles)):
             qp.save()
             qp.scale(1, 1)
             qp.setFont(QFont("Arial", 25))
-            # qp.rotate(45)
+            a = points[i, 2]
+            x, y = (self.text_radius * points[i, 0], self.text_radius * points[i, 1])
+            if points[i, 0] < 0:
+                a = a - np.pi
             qp.drawText(
-                self.central_point.x() + (self.radius // 2),
-                self.central_point.x() - (self.radius // 2),
-                text[0],
+                math.ceil(self.central_point.x() + x),
+                math.ceil(self.central_point.y() + y),
+                option[i % 3],
             )
             qp.restore()
-            # qp.rotate(-45)
 
-        # Draw the center point
-        # qp.setPen(Qt.NoPen)
-        # qp.setBrush(QBrush(QColor(117, 117, 117), Qt.SolidPattern))
-        # center_point = QPoint(200, 200)
-        # # qp.setBrush(QBrush(QColor(0, 0, 0), Qt.SolidPattern))
-        # # qp.drawEllipse(center_point, self.radius, self.radius)
-        # qp.drawEllipse(center_point, 60, 60)
-        # qp.setBrush(QBrush(QColor(117, 117, 117), Qt.SolidPattern))
-        # qp.setBrush(QBrush(QColor(189, 189, 189), Qt.SolidPattern))
-        # qp.drawEllipse(center_point, 35, 35)
-        # qp.setBrush(QBrush(QColor(117, 117, 117), Qt.SolidPattern))
-        # qp.drawEllipse(center_point, 25, 25)
-        #######
+        # Draw circles in the middle
+        center_point = QPoint(200, 200)
+        qp.setPen(Qt.NoPen)
+        qp.setBrush(QBrush(QColor(117, 117, 117), Qt.SolidPattern))
+        qp.drawEllipse(center_point, 60, 60)
+        qp.setBrush(QBrush(QColor(117, 117, 117), Qt.SolidPattern))
+        qp.setBrush(QBrush(QColor(189, 189, 189), Qt.SolidPattern))
+        qp.drawEllipse(center_point, 35, 35)
+        qp.setBrush(QBrush(QColor(117, 117, 117), Qt.SolidPattern))
+        qp.drawEllipse(center_point, 25, 25)
+
+    def calTextCoord(self, N):
+        alpha = 2 * np.pi / N + (np.pi / 180 * self.angle)
+        arclen = alpha * np.arange(0.5, N, 1)
+        coordX = np.cos(arclen)
+        coordY = np.sin(arclen)
+        return np.c_[coordX, coordY, arclen]  # 每一個 row 代表一個點，其中三筆資料分別代表該點的 X 座標、Y 座標、
 
     def startTimer(self):
         self.counter = 0
@@ -115,62 +128,3 @@ if __name__ == "__main__":
     roulette = Roulette()
     roulette.show()
     sys.exit(app.exec_())
-
-
-# class Roulette(QWidget):
-#     def __init__(self, parent=None):
-#         super().__init__(parent)
-#         self.angle = 0
-#         self.timer = QTimer(self)
-#         self.timer.timeout.connect(self.update)
-#         self.timer.start(10)
-
-#     def paintEvent(self, event):
-#         painter = QPainter(self)
-#         painter.setRenderHint(QPainter.Antialiasing)
-
-#         width, height = self.width(), self.height()
-#         x, y = width / 2, height / 2
-
-#         # draw the roulette
-#         brush = QBrush(Qt.SolidPattern)
-#         brush.setColor(Qt.red)
-#         painter.setBrush(brush)
-#         pen = QPen(Qt.NoPen)
-#         painter.setPen(pen)
-#         painter.drawEllipse(x - 100, y - 100, 200, 200)
-
-#         # draw the pointer
-#         painter.translate(x, y)
-#         painter.rotate(self.angle)
-#         brush.setColor(Qt.blue)
-#         painter.setBrush(brush)
-#         painter.drawEllipse(-10, -10, 20, 20)
-#         painter.drawRect(-1, -100, 2, 100)
-
-#     def spin(self):
-#         self.angle += 1
-
-
-# class MainWindow(QWidget):
-#     def __init__(self):
-#         super().__init__()
-
-#         self.setWindowTitle("Roulette")
-#         self.setGeometry(100, 100, 400, 400)
-
-#         self.roulette = Roulette(self)
-#         layout = QVBoxLayout(self)
-#         layout.addWidget(self.roulette)
-
-#         button = QPushButton("Spin", self)
-#         button.clicked.connect(self.roulette.spin)
-#         layout.addWidget(button)
-
-#         self.show()
-
-
-# if __name__ == "__main__":
-#     app = QApplication(sys.argv)
-#     window = MainWindow()
-#     sys.exit(app.exec_())

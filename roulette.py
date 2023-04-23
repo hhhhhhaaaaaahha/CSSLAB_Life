@@ -93,8 +93,9 @@ class Roulette(QWidget):
         qp.drawEllipse(center_point, 25, 25)
 
     def calTextCoord(self, N):
-        alpha = 2 * np.pi / N + (np.pi / 180 * self.angle)
-        arclen = alpha * np.arange(0.5, N, 1)
+        arclen = ((2 * np.pi / N) * np.arange(0.5, N, 1)) + (
+            (np.pi / 180) * (self.angle / 16)
+        )
         coordX = np.cos(arclen)
         coordY = np.sin(arclen)
         return np.c_[coordX, coordY, arclen]  # 每一個 row 代表一個點，其中三筆資料分別代表該點的 X 座標、Y 座標、

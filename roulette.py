@@ -25,6 +25,24 @@ class Roulette(QWidget):
         self.setWindowTitle("Roulette")
         gridlayout = QGridLayout()
 
+        # Define the colors for pie
+        self.colors = [
+            QColor(195, 166, 211),
+            QColor(215, 183, 232),
+            QColor(237, 201, 255),
+            QColor(246, 207, 243),
+            QColor(254, 212, 231),
+            QColor(248, 198, 195),
+            QColor(242, 183, 159),
+            QColor(236, 183, 132),
+            QColor(229, 183, 105),
+            QColor(223, 194, 79),
+            QColor(220, 199, 66),
+            QColor(216, 204, 52),
+            QColor(220, 209, 70),
+        ]
+        random.shuffle(self.colors)
+
         # spin-related variables
         self.angle = 0
         self.decrease_angle = 0
@@ -80,23 +98,18 @@ class Roulette(QWidget):
         # Define the bounding rectangle for the wheel
         wheel_rect = QRectF(10.0, 10.0, 380.0, 380.0)
 
-        # Define the colors and angles for each segment
-        colors = [
-            QColor(251, 140, 0),
-            QColor(229, 57, 53),
-            QColor(253, 216, 53),
-            QColor(244, 81, 30),
-            QColor(253, 216, 53),
-            QColor(216, 27, 96),
-            QColor(255, 179, 0),
-            QColor(255, 252, 0),
-        ]
-
         # Define option-related variables
         if len(self.options) < 2:
             angles = [0]
-        else:
+        elif len(self.options) < 7 and len(self.options) >= 2:
             angles = np.arange(0, 360, 360 / (len(self.options) * 2), dtype=int)
+        else:
+            if 360 % len(self.options) != 0:
+                ceiling = math.ceil(360 / len(self.options))
+                angles = [i * ceiling for i in range(len(self.options))]
+            else:
+                angles = np.arange(0, 360, 360 / len(self.options), dtype=int)
+
         if len(self.options) != 0:
             points = self.calTextCoord(len(angles))
 
@@ -104,12 +117,12 @@ class Roulette(QWidget):
         if len(self.options) < 2:
             qp.save()
             qp.setPen(Qt.NoPen)
-            qp.setBrush(QBrush(colors[0], Qt.SolidPattern))
+            qp.setBrush(QBrush(self.colors[0], Qt.SolidPattern))
             qp.drawPie(wheel_rect, angles[0] * 16 - self.angle, 360 * 16)
             qp.restore()
         else:
             for i in range(len(angles)):
-                qp.setBrush(QBrush(colors[i % len(self.options)], Qt.SolidPattern))
+                qp.setBrush(QBrush(self.colors[i % len(self.options)], Qt.SolidPattern))
                 qp.drawPie(wheel_rect, angles[i] * 16 - self.angle, angles[1] * 16)
 
         # Draw text

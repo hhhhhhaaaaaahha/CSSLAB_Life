@@ -1,6 +1,14 @@
 from PyQt5.QtCore import Qt, QPoint, QRectF, QTimer
-from PyQt5.QtGui import QPainter, QColor, QBrush, QPen, QFont
-from PyQt5.QtWidgets import QApplication, QPushButton, QWidget
+from PyQt5.QtGui import QBrush, QColor, QFont, QPainter, QPen, QPixmap, QIcon
+from PyQt5.QtWidgets import (
+    QApplication,
+    QGridLayout,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QToolBar,
+    QWidget,
+)
 import math
 import numpy as np
 import random
@@ -11,11 +19,13 @@ class Roulette(QWidget):
     def __init__(self):
         super().__init__()
 
+        # Set window
         self.mModified = True
-        self.setGeometry(100, 100, 400, 400)
+        self.setGeometry(100, 100, 800, 400)
         self.setWindowTitle("Roulette")
+        gridlayout = QGridLayout()
 
-        # spin-related variable
+        # spin-related variables
         self.angle = 0
         self.decrease_angle = 0
         self.counter = 1000000
@@ -24,12 +34,44 @@ class Roulette(QWidget):
         self.timer = QTimer()
         self.timer.timeout.connect(self.onTimer)
 
-        # text-related variable
+        # text-related variables
         self.text_radius = 150
         self.central_point = QPoint(192, 208)
 
-        spin_button = QPushButton("Spin", self)
-        spin_button.clicked.connect(self.startTimer)
+        # Add spin button
+        self.spin_button = QPushButton("Spin", self)
+        self.spin_button.clicked.connect(self.startTimer)
+
+        ## Option-related
+        # Init option text field
+
+        # self.add_option_icon = QLabel(self)
+        # self.add_option_icon.setPixmap(
+        #     QPixmap("img/21a921f165298b0110b80821cc5bd761.svg").scaled(25, 25)
+        # )
+        # self.add_option_icon.setPixmap(QPixmap("./img/add_button.png").scaled(25, 25))
+        # self.add_option_icon.move(500, 8)
+
+        self.opt = []
+
+        self.text_field = QLineEdit(self)
+        self.text_field.move(535, 10)
+
+        self.submit_button = QPushButton("新增", self)
+        self.submit_button.clicked.connect(self.addOption)
+        self.submit_button.move(670, 5)
+        # icon = QIcon("img/add_button.png")
+        # self.submit_button.setIcon(icon)
+
+    def addOption(self):
+        self.text_field.move(self.text_field.x(), self.text_field.y() + 30)
+        self.submit_button.move(self.submit_button.x(), self.submit_button.y() + 30)
+        self.opt.append(QLabel(f"{len(self.opt)+1}.    {self.text_field.text()}", self))
+        self.opt[-1].move(self.text_field.x(), self.text_field.y() - 30)
+        self.text_field.clear()
+        # self.temp = QLabel("QQQQQQQQQQQ", self)
+        # self.temp.move(self.text_field.x(), self.text_field.y() - 30)
+        self.opt[-1].show()
 
     def paintEvent(self, event):
         if self.mModified:
@@ -55,21 +97,21 @@ class Roulette(QWidget):
             QColor(253, 216, 53),
             QColor(244, 81, 30),
         ]
-        # Define optionns
-        option = ["A", "B", "C"]
-        angles = [60 * i for i in range(6)]
+        # Define option-related variables
+        option = ["I'm PASTA", "麵屋雞金", "自助餐"]
+        angles = np.arange(0, 360, 360 / (len(option) * 2), dtype=int)
         points = self.calTextCoord(len(angles))
 
         # Draw the segments
         for i in range(len(angles)):
             qp.setBrush(QBrush(colors[i % len(option)], Qt.SolidPattern))
-            qp.drawPie(wheel_rect, angles[i] * 16 - self.angle, 60 * 16)
+            qp.drawPie(wheel_rect, angles[i] * 16 - self.angle, angles[1] * 16)
 
         # Draw text
         for i in range(len(angles)):
             qp.save()
             qp.scale(1, 1)
-            qp.setFont(QFont("Arial", 25))
+            qp.setFont(QFont("Academy Engraved LET", 25))
             a = points[i, 2]
             x, y = (self.text_radius * points[i, 0], self.text_radius * points[i, 1])
             if points[i, 0] < 0:

@@ -1,5 +1,14 @@
 from PyQt5.QtCore import Qt, QPoint, QRectF, QTimer
-from PyQt5.QtGui import QBrush, QColor, QFont, QPainter, QPen, QPixmap, QIcon
+from PyQt5.QtGui import (
+    QBrush,
+    QColor,
+    QFont,
+    QIcon,
+    QPainter,
+    QPen,
+    QPixmap,
+    QPolygon,
+)
 from PyQt5.QtWidgets import (
     QApplication,
     QGridLayout,
@@ -141,15 +150,16 @@ class Roulette(QWidget):
                 qp.drawText(
                     math.ceil(self.central_point.x() + x),
                     math.ceil(self.central_point.y() + y),
-                    self.options[i % len(self.options)].text()[6:],
+                    self.options[i % len(self.options)].text(),
                 )
                 qp.restore()
 
-        # Draw circles in the middle
+        # Draw circles in the middle and the triangular pointer
         center_point = QPoint(200, 200)
         qp.setPen(Qt.NoPen)
         qp.setBrush(QBrush(QColor(117, 117, 117), Qt.SolidPattern))
         qp.drawEllipse(center_point, 60, 60)
+        qp.drawPolygon(QPolygon([QPoint(140, 200), QPoint(260, 200), QPoint(200, 125)]))
         qp.setBrush(QBrush(QColor(117, 117, 117), Qt.SolidPattern))
         qp.setBrush(QBrush(QColor(189, 189, 189), Qt.SolidPattern))
         qp.drawEllipse(center_point, 35, 35)
@@ -162,9 +172,7 @@ class Roulette(QWidget):
         self.submit_button.move(self.submit_button.x(), self.submit_button.y() + 30)
 
         # Turn submitted text into label
-        self.options.append(
-            QLabel(f"{len(self.options)+1}.    {self.text_field.text()}", self)
-        )
+        self.options.append(QLabel(f"{self.text_field.text()}", self))
         self.options[-1].move(self.text_field.x(), self.text_field.y() - 30)
         self.options[-1].show()
         self.text_field.clear()

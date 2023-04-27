@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt, QPoint, QRectF, QTimer
+from PyQt5.QtCore import Qt, QPoint, QRectF, QRect, QSize, QTimer
 from PyQt5.QtGui import (
     QBrush,
     QColor,
@@ -8,9 +8,11 @@ from PyQt5.QtGui import (
     QPen,
     QPixmap,
     QPolygon,
+    QTransform,
 )
 from PyQt5.QtWidgets import (
     QApplication,
+    QFrame,
     QGridLayout,
     QLabel,
     QLineEdit,
@@ -30,27 +32,28 @@ class Roulette(QWidget):
 
         # Set window
         self.mModified = True
-        self.setGeometry(100, 100, 800, 400)
+        self.setGeometry(100, 100, 800, 600)
         self.setWindowTitle("Roulette")
         gridlayout = QGridLayout()
 
         # Define the colors for pie
-        self.colors = [
-            QColor(195, 166, 211),
-            QColor(215, 183, 232),
-            QColor(237, 201, 255),
-            QColor(246, 207, 243),
-            QColor(254, 212, 231),
-            QColor(248, 198, 195),
-            QColor(242, 183, 159),
-            QColor(236, 183, 132),
-            QColor(229, 183, 105),
-            QColor(223, 194, 79),
-            QColor(220, 199, 66),
-            QColor(216, 204, 52),
-            QColor(220, 209, 70),
+        self.rgbs = [
+            (195, 166, 211),
+            (215, 183, 232),
+            (237, 201, 255),
+            (246, 207, 243),
+            (254, 212, 231),
+            (248, 198, 195),
+            (242, 183, 159),
+            (236, 183, 132),
+            (229, 183, 105),
+            (223, 194, 79),
+            (220, 199, 66),
+            (216, 204, 52),
+            (220, 209, 70),
         ]
-        random.shuffle(self.colors)
+        random.shuffle(self.rgbs)
+        self.colors = [QColor(r, g, b) for r, g, b in self.rgbs]
 
         # spin-related variables
         self.angle = 0
@@ -63,7 +66,7 @@ class Roulette(QWidget):
 
         # text-related variables
         self.text_radius = 150
-        self.central_point = QPoint(192, 208)
+        self.central_point = QPoint(282, 298)
 
         # Add spin button
         self.spin_button = QPushButton("Spin", self)
@@ -79,9 +82,18 @@ class Roulette(QWidget):
         # self.add_option_icon.setPixmap(QPixmap("./img/add_button.png").scaled(25, 25))
         # self.add_option_icon.move(500, 8)
         self.options: list[QLabel] = []
-
         self.text_field = QLineEdit(self)
         self.text_field.move(535, 10)
+
+        # Init chosen label
+        self.chosen_option = QLabel("???", self)
+        self.chosen_option.setFont(QFont("Academy Engraved LET", 30))
+        self.chosen_option.setAlignment(Qt.AlignCenter)
+        self.chosen_option.setFixedWidth(162)
+        self.chosen_option.setFrameShape(QFrame.Panel)
+        self.chosen_option.setFrameShadow(QFrame.Sunken)
+        self.chosen_option.setLineWidth(3)
+        self.chosen_option.move(189, 50)
 
         # Init submit button
         self.submit_button = QPushButton("新增", self)
@@ -105,7 +117,7 @@ class Roulette(QWidget):
         qp.setPen(pen)
 
         # Define the bounding rectangle for the wheel
-        wheel_rect = QRectF(10.0, 10.0, 380.0, 380.0)
+        wheel_rect = QRectF(80.0, 100.0, 380.0, 380.0)
 
         # Define option-related variables
         if len(self.options) < 2:
@@ -155,14 +167,16 @@ class Roulette(QWidget):
                 qp.restore()
 
         # Draw circles in the middle and the triangular pointer
-        center_point = QPoint(200, 200)
+        center_point = QPoint(270, 290)
         qp.setPen(Qt.NoPen)
         qp.setBrush(QBrush(QColor(117, 117, 117), Qt.SolidPattern))
         qp.drawEllipse(center_point, 60, 60)
-        qp.drawPolygon(QPolygon([QPoint(140, 200), QPoint(260, 200), QPoint(200, 125)]))
-        qp.setBrush(QBrush(QColor(117, 117, 117), Qt.SolidPattern))
+
+        qp.drawPolygon(QPolygon([QPoint(210, 290), QPoint(330, 290), QPoint(270, 215)]))
+
         qp.setBrush(QBrush(QColor(189, 189, 189), Qt.SolidPattern))
         qp.drawEllipse(center_point, 35, 35)
+
         qp.setBrush(QBrush(QColor(117, 117, 117), Qt.SolidPattern))
         qp.drawEllipse(center_point, 25, 25)
 
@@ -192,8 +206,8 @@ class Roulette(QWidget):
     def startTimer(self):
         self.counter = 0
         self.spin_time = random.randint(2000, 2500)
-        self.spin_angle = 30
-        self.decrease_angle = self.spin_angle / ((self.spin_time // 7) * 6)
+        self.spin_angle = 50
+        self.decrease_angle = self.spin_angle / ((self.spin_time // 4) * 3)
         self.timer.start(1)
 
     def onTimer(self):
@@ -201,12 +215,23 @@ class Roulette(QWidget):
             if math.ceil(self.spin_angle) == 0:
                 self.spin_angle = 1
                 self.decrease_angle = 0
-            if self.counter < (self.spin_time // 7):
+            if self.counter < (self.spin_time // 4):
                 self.angle += self.spin_angle
-            elif self.counter >= (self.spin_time // 7):
+            elif self.counter >= (self.spin_time // 4):
                 self.spin_angle -= self.decrease_angle
                 self.angle += math.ceil(self.spin_angle)
             self.counter += 1
+            self.mModified = True
+            self.update()
+
+            # Check if chosen_option need to be update
+            pixel_color = self.grab().toImage().pixelColor(540, 400).getRgb()
+            if pixel_color[:3] != (0, 0, 0):
+                self.chosen_option.setText(
+                    self.options[::-1][
+                        self.rgbs.index((pixel_color[:3])) - len(self.options)
+                    ].text()
+                )
             self.mModified = True
             self.update()
         else:

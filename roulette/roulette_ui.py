@@ -69,9 +69,10 @@ class RouletteUI(object):
 
         # Init chosen label
         self.chosen_option = QLabel("???", window)
-        self.chosen_option.setFont(QFont("Academy Engraved LET", 30))
+        self.chosen_option.setFont(QFont("Arial", 30))
         self.chosen_option.setAlignment(Qt.AlignCenter)
-        self.chosen_option.setFixedWidth(200)
+        self.chosen_option.setFixedWidth(162)
+        self.chosen_option.setFixedHeight(40)
         self.chosen_option.setFrameShape(QFrame.Panel)
         self.chosen_option.setFrameShadow(QFrame.Sunken)
         self.chosen_option.setLineWidth(3)

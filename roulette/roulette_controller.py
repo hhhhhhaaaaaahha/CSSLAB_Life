@@ -87,7 +87,7 @@ class RouletteController(QMainWindow):
             for i in range(len(angles)):
                 qp.save()
                 qp.scale(1, 1)
-                qp.setFont(QFont("Academy Engraved LET", 25))
+                qp.setFont(QFont("Arial", 25))
                 a = points[i, 2]
                 x, y = (
                     self.ui.text_radius * points[i, 0],

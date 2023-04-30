@@ -65,7 +65,7 @@ class ShoolTimeTableUI:
             self.firstrowLabels[label_name] = QtWidgets.QLabel(window)
             self.firstrowLabels[label_name].setStyleSheet(self.style_firstcolLabel)
             self.firstrowLabels[label_name].setText(str(i))
-            self.firstrowLabels[label_name].setGeometry(25, y+ i*h, 25, h) # 
+            self.firstrowLabels[label_name].setGeometry(25, y+ i*h, 25, h)
         for j in range(5): #first row
             label_name ='0,'+str(j)
             self.firstrowLabels[label_name] = QtWidgets.QLabel(window)

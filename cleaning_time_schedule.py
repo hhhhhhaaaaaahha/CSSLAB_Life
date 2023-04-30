@@ -6,7 +6,7 @@ from datetime import timedelta
 class MyWidget(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
-        self.month = 4 # global var 想show出的月份
+        self.month = 4 # 想show出的月份
         self.semesterStartD = [2, 19]
         self.semesterEndD = [6, 21]
         self.setWindowTitle('blhablha')
@@ -135,6 +135,7 @@ class MyWidget(QtWidgets.QWidget):
         for i in range(1, 6):
             for j in range(5):
                 label_name = str(i)+','+str(j)
+                print('init'+label_name)
                 if j==2:
                     self.Label2s[label_name].setStyleSheet('''
                     background:'''+self.member_work[count_member][2]+''';
@@ -170,6 +171,7 @@ class MyWidget(QtWidgets.QWidget):
         for i in range(1, 6):
             for j in range(5):
                 label_name = str(i)+','+str(j)
+                print('changed'+label_name)
                 self.Label1s[label_name].setText('')
                 self.Label1s[label_name].setStyleSheet(self.initstyle_Labels)
                 self.Label2s[label_name].setText('')
@@ -234,6 +236,7 @@ class MyWidget(QtWidgets.QWidget):
             nextMonth = (date(2023, self.month, 1)+timedelta(days = 31)).strftime("%m")
             for i in range(1, 6):
                 for j in range(5):
+                    print('changed'+label_name)
                     label_name = str(i)+','+str(j)
                     if i==1 and j<dayOftheWeek-1:
                         continue

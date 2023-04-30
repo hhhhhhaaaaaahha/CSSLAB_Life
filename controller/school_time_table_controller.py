@@ -12,7 +12,7 @@ class SchoolTimeTableController(QMainWindow):
         self.schoolTimeTable = SchoolTimeTable()
         self.ui = ShoolTimeTableUI(self)
 
-        #button lisener
+        #ComboBox lisener
         self.ui.setComboBoxLisener(self.changeClassTimeScedualLissener)
         
         # initail 顯示yuko課表
@@ -21,10 +21,3 @@ class SchoolTimeTableController(QMainWindow):
     def changeClassTimeScedualLissener(self):
         name = self.ui.ComboBoxGetter()
         self.ui.change(self.schoolTimeTable.ClassTimeScedual[name])
-
-if __name__ == '__main__':
-    import sys
-    app = QMainWindow.QApplication(sys.argv)
-    Form = QMainWindow()
-    Form.show()
-    sys.exit(app.exec_())

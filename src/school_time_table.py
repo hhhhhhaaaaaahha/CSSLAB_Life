@@ -8,6 +8,3 @@ class SchoolTimeTable:
     # 未來新功能
     #def addMemberClassTimeScedual():
     #def setMemberClassTimeScedual():
-
-if __name__ == '__main__':
-    print(SchoolTimeTable().ClassTimeScedual['子瑩'])

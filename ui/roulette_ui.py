@@ -53,6 +53,8 @@ class RouletteUI(object):
 
         # Add spin button
         self.spin_button = QPushButton("Spin", window)
+        self.spin_button.setFixedWidth(100)
+        self.spin_button.move(220, 500)
 
         ## Option-related
         # Init option text field
@@ -83,6 +85,11 @@ class RouletteUI(object):
         self.submit_button.move(670, 5)
         # icon = QIcon("img/add_button.png")
         # self.submit_button.setIcon(icon)
+
+        # Init return button
+        self.retbtn = QPushButton(window)
+        self.retbtn.setText("返回首頁")
+        self.retbtn.move(10, 10)
 
 
 if __name__ == "__main__":

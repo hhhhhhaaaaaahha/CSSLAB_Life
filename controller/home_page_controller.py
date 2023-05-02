@@ -26,6 +26,7 @@ class HomePageController(QMainWindow):
         self.ui.pushButton_4.clicked.connect(self.changeToMeetingTimeTable)
 
     def changeToRoulette(self):
+        self.roulette_window.backSignal.connect(self.show)
         self.hide()
         self.roulette_window.show()
 

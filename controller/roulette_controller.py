@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt, QPoint, QRectF
+from PyQt5.QtCore import Qt, QPoint, QRectF, pyqtSignal
 from PyQt5.QtGui import QBrush, QColor, QFont, QPainter, QPen, QPolygon
 from PyQt5.QtWidgets import QLabel, QMainWindow
 from src.roulette import Roulette
@@ -11,6 +11,8 @@ from ui.roulette_ui import RouletteUI
 
 
 class RouletteController(QMainWindow):
+    backSignal = pyqtSignal()
+
     def __init__(self):
         super().__init__()
         self.roulette = Roulette()
@@ -21,6 +23,10 @@ class RouletteController(QMainWindow):
     def setInitUI(self):
         self.ui.spin_button.clicked.connect(self.startTimer)
         self.ui.submit_button.clicked.connect(self.addOption)
+
+        # Connect retbtn with return event
+        self.ui.retbtn.clicked.connect(self.changeToHomePage)
+
         self.ui.timer.timeout.connect(self.onTimer)
 
     def paintEvent(self, event):
@@ -179,3 +185,7 @@ class RouletteController(QMainWindow):
             self.update()
         else:
             self.ui.timer.stop()
+
+    def changeToHomePage(self):
+        self.close()
+        self.backSignal.emit()

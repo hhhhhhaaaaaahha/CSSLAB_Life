@@ -51,6 +51,11 @@ class RouletteUI(object):
         self.text_radius = 150
         self.central_point = QPoint(282, 298)
 
+        # Add return button
+        self.retbtn = QPushButton(window)
+        self.retbtn.setText("返回首頁")
+        self.retbtn.move(10, 10)
+
         # Add spin button
         self.spin_button = QPushButton("Spin", window)
         self.spin_button.setFixedWidth(100)
@@ -58,7 +63,6 @@ class RouletteUI(object):
 
         ## Option-related
         # Init option text field
-
         # self.add_option_icon = QLabel(self)
         # self.add_option_icon.setPixmap(
         #     QPixmap("img/21a921f165298b0110b80821cc5bd761.svg").scaled(25, 25)
@@ -66,6 +70,8 @@ class RouletteUI(object):
         # self.add_option_icon.setPixmap(QPixmap("./img/add_button.png").scaled(25, 25))
         # self.add_option_icon.move(500, 8)
         self.text_field = QLineEdit(window)
+        self.text_field.setFixedWidth(130)
+        self.text_field.setFixedHeight(23)
         self.text_field.move(535, 10)
         self.restaurant_labels: list[QLabel] = []
 
@@ -86,10 +92,9 @@ class RouletteUI(object):
         # icon = QIcon("img/add_button.png")
         # self.submit_button.setIcon(icon)
 
-        # Init return button
-        self.retbtn = QPushButton(window)
-        self.retbtn.setText("返回首頁")
-        self.retbtn.move(10, 10)
+        # Inin clear button
+        self.clear_button = QPushButton("清除", window)
+        self.clear_button.move(600, 50)
 
 
 if __name__ == "__main__":

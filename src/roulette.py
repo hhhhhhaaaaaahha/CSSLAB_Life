@@ -8,8 +8,8 @@ class Roulette:
     def addRestaurant(self, name: str):
         self.restaurant_list.append(name)
 
-    def delRestaurant(self, index: int):
-        self.restaurant_list.pop(index)
+    def clearRestaurantList(self):
+        self.restaurant_list = []
 
     def getRestaurant(self, index: int) -> str:
         return self.restaurant_list[index]

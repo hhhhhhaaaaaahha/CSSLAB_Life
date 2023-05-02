@@ -23,6 +23,7 @@ class RouletteController(QMainWindow):
     def setInitUI(self):
         self.ui.spin_button.clicked.connect(self.startTimer)
         self.ui.submit_button.clicked.connect(self.addOption)
+        self.ui.clear_button.clicked.connect(self.clearOptions)
 
         # Connect retbtn with return event
         self.ui.retbtn.clicked.connect(self.changeToHomePage)
@@ -125,10 +126,13 @@ class RouletteController(QMainWindow):
         # Add text in text field to restaurant_list
         self.roulette.addRestaurant(self.ui.text_field.text())
 
-        # Move text field and submit button
+        # Move text field, submit button and clear button
         self.ui.text_field.move(self.ui.text_field.x(), self.ui.text_field.y() + 30)
         self.ui.submit_button.move(
             self.ui.submit_button.x(), self.ui.submit_button.y() + 30
+        )
+        self.ui.clear_button.move(
+            self.ui.clear_button.x(), self.ui.clear_button.y() + 30
         )
 
         # Turn submitted text into label
@@ -138,6 +142,19 @@ class RouletteController(QMainWindow):
         )
         self.ui.restaurant_labels[-1].show()
         self.ui.text_field.clear()
+
+        # Update window
+        self.ui.mModified = True
+        self.update()
+
+    def clearOptions(self):
+        self.roulette.clearRestaurantList()
+        for i in self.ui.restaurant_labels:
+            i.hide()
+        self.ui.restaurant_labels = []
+        self.ui.text_field.move(535, 10)
+        self.ui.submit_button.move(670, 5)
+        self.ui.clear_button.move(600, 50)
 
         # Update window
         self.ui.mModified = True

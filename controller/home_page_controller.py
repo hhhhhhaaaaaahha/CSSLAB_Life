@@ -16,27 +16,29 @@ class HomePageController(QMainWindow):
 
     def setInitUI(self):
         self.roulette_window = RouletteController()
-        self.cleaning_time_table_window = CleaningTimeTableController()
+        # self.cleaning_time_table_window = CleaningTimeTableController()
         self.meeting_time_table_window = MeetingTimeTableController()
         self.school_time_table_window = SchoolTimeTableController()
 
         self.ui.pushButton.clicked.connect(self.changeToRoulette)
-        self.ui.pushButton_2.clicked.connect(self.changeToCleaningTimeTable)
+        # self.ui.pushButton_2.clicked.connect(self.changeToCleaningTimeTable)
         self.ui.pushButton_3.clicked.connect(self.changeToSchoolTimeTable)
         self.ui.pushButton_4.clicked.connect(self.changeToMeetingTimeTable)
 
     def changeToRoulette(self):
-        self.close()
+        self.hide()
         self.roulette_window.show()
 
-    def changeToCleaningTimeTable(self):
-        self.close()
-        self.cleaning_time_table_window.show()
+    # def changeToCleaningTimeTable(self):
+    #     self.hide()
+    #     self.cleaning_time_table_window.show()
 
     def changeToMeetingTimeTable(self):
-        self.close()
+        self.meeting_time_table_window.backSignal.connect(self.show)
+        self.hide()
         self.meeting_time_table_window.show()
 
     def changeToSchoolTimeTable(self):
-        self.close()
+        self.school_time_table_window.backSignal.connect(self.show)
+        self.hide()
         self.school_time_table_window.show()

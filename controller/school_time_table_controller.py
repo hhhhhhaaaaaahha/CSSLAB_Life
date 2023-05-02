@@ -20,6 +20,9 @@ class SchoolTimeTableController(QMainWindow):
         # ComboBox lisener
         self.ui.setComboBoxLisener(self.changeClassTimeScedualLissener)
 
+        # Connect retbtn with return event
+        self.ui.retbtn.clicked.connect(self.changeToHomePage)
+
         # initail 顯示yuko課表
         self.ui.initailize(
             self.schoolTimeTable.ClassTimeScedual.keys(),

@@ -16,6 +16,7 @@ class MeetingTimeTableController(QMainWindow):
         self.meetingTimeTable = MeetingTimeTable()
         self.ui = MeetingTimeTableUI(self, self.meetingTimeTable.getmeeting_time())
 
+        # Connect retbtn with return event
         self.ui.retbtn.clicked.connect(self.changeToHomePage)
 
     def changeToHomePage(self):

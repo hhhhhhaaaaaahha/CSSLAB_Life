@@ -50,7 +50,7 @@ class CleaningTimeTableUI:
         label.move(50, 70)
     
         self.label_month = QtWidgets.QLabel(window)
-        self.label_month.setText(date(2023, 4, 20).strftime("%m %Y"))
+        self.label_month.setText(date(2023, self.month, 20).strftime("%m %Y"))
         self.label_month.move(52, 100)
 
         lastmonthbtn = QtWidgets.QPushButton(window)
@@ -115,7 +115,6 @@ class CleaningTimeTableUI:
                 self.Labeldays[label_name].setStyleSheet(self.initstyle_Labels)
         # two case
         # 1號在假日 -> firstrow從星期一開始
-        # else -> firstrow從一號開始
         if date(2023, month, 1).isoweekday()==6 or date(2023, month, 1).isoweekday()==7:
             self.first_monday = -1
             for i in range(7):
@@ -167,9 +166,10 @@ class CleaningTimeTableUI:
                             count_member = 0
                         else:
                             count_member += 1
+        # else -> firstrow從一號開始
         else:
             dayOftheWeek = date(2023, month, 1).isoweekday()
-            nextMonth = (date(2023, month, 1)+timedelta(days = 31)).strftime("%m")
+            nextMonth = (date(2023, month, 1)+timedelta(days = 33)).strftime("%m")
             for i in range(1, 6):
                 for j in range(5):
                     label_name = str(i)+','+str(j)

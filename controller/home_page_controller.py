@@ -29,6 +29,8 @@ class HomePageController(QMainWindow):
         self.roulette_window.backSignal.connect(self.show)
         self.hide()
         self.roulette_window.show()
+        self.roulette_window.mModified = True
+        self.roulette_window.update()
 
     def changeToCleaningTimeTable(self):
         self.cleaning_time_table_window.backSignal.connect(self.show)

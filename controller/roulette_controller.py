@@ -18,6 +18,7 @@ class RouletteController(QMainWindow):
         self.roulette = Roulette()
         self.ui = RouletteUI()
         self.ui.setupUI(self)
+        self.mModified = True
         self.setInitUI()
 
     def setInitUI(self):
@@ -31,11 +32,11 @@ class RouletteController(QMainWindow):
         self.ui.timer.timeout.connect(self.onTimer)
 
     def paintEvent(self, event):
-        if self.ui.mModified:
+        if self.mModified:
             qp = QPainter()
             qp.begin(self)
             self.drawRoulette(qp)
-            self.ui.mModified = False
+            self.mModified = False
 
     def drawRoulette(self, qp: QPainter):
         pen = QPen(
@@ -144,20 +145,22 @@ class RouletteController(QMainWindow):
         self.ui.text_field.clear()
 
         # Update window
-        self.ui.mModified = True
+        self.mModified = True
         self.update()
 
     def clearOptions(self):
-        self.roulette.clearRestaurantList()
         for i in self.ui.restaurant_labels:
             i.hide()
+
+        self.roulette.clearRestaurantList()
         self.ui.restaurant_labels = []
         self.ui.text_field.move(535, 10)
         self.ui.submit_button.move(670, 5)
         self.ui.clear_button.move(600, 50)
+        self.ui.chosen_option.setText("???")
 
         # Update window
-        self.ui.mModified = True
+        self.mModified = True
         self.update()
 
     def calTextCoord(self, n):
@@ -170,8 +173,8 @@ class RouletteController(QMainWindow):
 
     def startTimer(self):
         self.ui.counter = 0
-        self.ui.spin_time = random.randint(2000, 2500)
-        self.ui.spin_angle = 60
+        self.ui.spin_time = random.randint(500, 1000)
+        self.ui.spin_angle = 50
         self.ui.decrease_angle = self.ui.spin_angle / (self.ui.spin_time // 2)
         self.ui.timer.start(1)
 
@@ -186,7 +189,7 @@ class RouletteController(QMainWindow):
                 self.ui.spin_angle -= self.ui.decrease_angle
                 self.ui.angle += math.ceil(self.ui.spin_angle)
             self.ui.counter += 1
-            self.ui.mModified = True
+            self.mModified = True
             self.update()
 
             # Check if chosen_option need to be update
@@ -198,7 +201,7 @@ class RouletteController(QMainWindow):
                         - self.roulette.getRestaurantCount()
                     ]
                 )
-            self.ui.mModified = True
+            self.mModified = True
             self.update()
         else:
             self.ui.timer.stop()

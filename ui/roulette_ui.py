@@ -16,7 +16,6 @@ import random
 class RouletteUI(object):
     def setupUI(self, window: QMainWindow):
         # Set window
-        self.mModified = True
         window.setGeometry(100, 100, 800, 600)
         window.setWindowTitle("Roulette")
 

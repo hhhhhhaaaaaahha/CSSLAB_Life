@@ -16,4 +16,4 @@ class MeetingTimeTable:
         }
 
     def getmeeting_time(self):
-        return self.meeting_time
+        return list(self.meeting_time.items())

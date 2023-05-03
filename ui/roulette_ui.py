@@ -16,7 +16,7 @@ import random
 class RouletteUI(object):
     def setupUI(self, window: QMainWindow):
         # Set window
-        window.setGeometry(100, 100, 800, 600)
+        window.setGeometry(0, 0, 800, 600)
         window.setWindowTitle("Roulette")
 
         # Define the colors for pie

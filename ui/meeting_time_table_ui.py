@@ -1,4 +1,5 @@
 from PyQt5 import QtWidgets
+from PyQt5.QtGui import QFont
 
 
 class MeetingTimeTableUI:
@@ -27,12 +28,18 @@ class MeetingTimeTableUI:
     def __init__(self, window: QtWidgets.QMainWindow, meeting_time):
         self.style()
 
+        window.setGeometry(0, 0, 1000, 600)
+
         self.retbtn = QtWidgets.QPushButton(window)
         self.retbtn.setText("返回首頁")
         self.retbtn.move(10, 10)
 
         self.label = QtWidgets.QLabel(window)
+        self.label.setFixedWidth(200)
         self.label.setText("meeting時間表")
+        font = QFont("Arial", 25)
+        font.setBold(True)
+        self.label.setFont(font)
         self.label.move(50, 70)
 
         x = 70
@@ -82,7 +89,9 @@ class MeetingTimeTableUI:
                 self.Labels[label_name].setStyleSheet(self.initstyle_Labels)
                 self.v_layouts[label_name].addWidget(self.Labels[label_name])
         for member in meeting_time:
-            meeting_day_time = member[1][0] + "," + str(col_time.index(member[1][1]) + 1)
+            meeting_day_time = (
+                member[1][0] + "," + str(col_time.index(member[1][1]) + 1)
+            )
             self.Labels[meeting_day_time[len(meeting_day_time) :: -1]].setText(
                 member[0]
             )  # reverse

@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets
+from PyQt5.QtGui import QFont
 from datetime import date
 from datetime import timedelta
-import random
 
 
 class CleaningTimeTableUI:
@@ -35,6 +35,7 @@ class CleaningTimeTableUI:
     def __init__(
         self, window: QtWidgets.QMainWindow, hatarakuMembersThisSemester, StartD, EndD
     ):
+        window.setGeometry(0, 0, 940, 1000)
         self.style()
 
         self.month = date.today().month  # 想show出的月份
@@ -65,6 +66,10 @@ class CleaningTimeTableUI:
         self.retbtn.move(10, 10)
 
         label = QtWidgets.QLabel(window)
+        label.setFixedWidth(300)
+        font = QFont("Arial", 25)
+        font.setBold(True)
+        label.setFont(font)
         label.setText("打掃排班表")
         label.move(50, 70)
 
@@ -81,10 +86,14 @@ class CleaningTimeTableUI:
         nextmonthbtn.setGeometry(820, 80, 30, 30)
         nextmonthbtn.clicked.connect(self.changeToLastMonth)
 
-        x = 50
-        y = 120
-        w = 170
-        h = 120
+        x = 45
+        y = 108
+        w = 153
+        h = 108
+        # x = 50
+        # y = 120
+        # w = 170
+        # h = 120
 
         self.vboxs = {}
         self.v_layouts = {}

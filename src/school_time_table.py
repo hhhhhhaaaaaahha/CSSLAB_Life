@@ -1,5 +1,5 @@
 class SchoolTimeTable:
-    def __init__(self):
+    def __init__(self, member):
         self.ClassTimeScedual = {
             "子瑩": [
                 ["檔案與儲存系統", ["2,5", "2,6", "2,7"]],

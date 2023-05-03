@@ -1,5 +1,5 @@
 class MeetingTimeTable:
-    def __init__(self):
+    def __init__(self, member):
         self.meeting_time = {
             "子瑩": ["1", "16:00"],
             "上澤": ["1", "17:00"],

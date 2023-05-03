@@ -19,19 +19,9 @@ class Roulette:
         self.getRestaurantList()
 
     def getRestaurant(self, index: int) -> str:
-        # headers = {"member_id": self.member.token}
-        # requests.post(
-        #     "http://127.0.0.1:5000/get_restraunt",
-        #     data={"index": index},
-        #     headers=headers,
-        # ).json()["name"]
         return self.restaurant_list_cached[index]
 
     def getRestaurantCount(self) -> int:
-        # headers = {"member_id": self.member.token}
-        # requests.post(
-        #     "http://127.0.0.1:5000/get_restraunt_count", headers=headers
-        # ).json()["count"]
         return len(self.restaurant_list_cached)
 
     def getRestaurantList(self) -> list:

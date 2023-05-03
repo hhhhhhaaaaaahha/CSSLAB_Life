@@ -25,13 +25,13 @@ class SchoolTimeTableController(QMainWindow):
 
         # initail 顯示yuko課表
         self.ui.initailize(
-            self.schoolTimeTable.ClassTimeScedual.keys(),
-            self.schoolTimeTable.ClassTimeScedual["子瑩"],
+            self.schoolTimeTable.getAllMembers(),
+            self.schoolTimeTable.getMemberClassTimeScedual("子瑩"),
         )
 
     def changeClassTimeScedualLissener(self):
         name = self.ui.ComboBoxGetter()
-        self.ui.change(self.schoolTimeTable.ClassTimeScedual[name])
+        self.ui.change(self.schoolTimeTable.getMemberClassTimeScedual(name))
 
     def changeToHomePage(self):
         self.hide()

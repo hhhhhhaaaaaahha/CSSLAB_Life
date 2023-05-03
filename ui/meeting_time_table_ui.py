@@ -45,7 +45,7 @@ class MeetingTimeTableUI:
         self.Labels = {}
         self.firstrowLabels = {}
 
-        col_time = list(set([member[2] for member in meeting_time]))
+        col_time = list(set([member[1][1] for member in meeting_time]))
         col_time.sort()
         for i in range(1, len(col_time) + 1):  # first col
             label_name = "-1," + str(i)
@@ -82,7 +82,7 @@ class MeetingTimeTableUI:
                 self.Labels[label_name].setStyleSheet(self.initstyle_Labels)
                 self.v_layouts[label_name].addWidget(self.Labels[label_name])
         for member in meeting_time:
-            meeting_day_time = member[1] + "," + str(col_time.index(member[2]) + 1)
+            meeting_day_time = member[1][0] + "," + str(col_time.index(member[1][1]) + 1)
             self.Labels[meeting_day_time[len(meeting_day_time) :: -1]].setText(
                 member[0]
             )  # reverse

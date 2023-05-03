@@ -216,4 +216,3 @@ class RouletteController(QMainWindow):
 
     def closeEvent(self, event):
         self.roulette.clearRestaurantList()
-        print(self.roulette.getRestaurantList())

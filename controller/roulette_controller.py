@@ -13,9 +13,9 @@ from ui.roulette_ui import RouletteUI
 class RouletteController(QMainWindow):
     backSignal = pyqtSignal()
 
-    def __init__(self):
+    def __init__(self, member):
         super().__init__()
-        self.roulette = Roulette()
+        self.roulette = Roulette(member)
         self.ui = RouletteUI()
         self.ui.setupUI(self)
         self.mModified = True
@@ -153,7 +153,7 @@ class RouletteController(QMainWindow):
             i.hide()
 
         self.roulette.clearRestaurantList()
-        self.ui.restaurant_labels = []
+        self.ui.restaurant_labels.clear()
         self.ui.text_field.move(535, 10)
         self.ui.submit_button.move(670, 5)
         self.ui.clear_button.move(600, 50)
@@ -194,18 +194,26 @@ class RouletteController(QMainWindow):
 
             # Check if chosen_option need to be update
             pixel_color = self.grab().toImage().pixelColor(540, 400).getRgb()
-            if pixel_color[:3] != (0, 0, 0):
+            # if pixel_color[:3] != (0, 0, 0) and pixel_color[:3] != (20, 17, 7):
+            try:
                 self.ui.chosen_option.setText(
                     self.roulette.getRestaurantList()[::-1][
                         self.ui.rgbs.index((pixel_color[:3]))
                         - self.roulette.getRestaurantCount()
                     ]
                 )
-            self.mModified = True
-            self.update()
+                self.mModified = True
+                self.update()
+            except:
+                self.mModified = True
+                self.update()
         else:
             self.ui.timer.stop()
 
     def changeToHomePage(self):
-        self.close()
+        self.hide()
         self.backSignal.emit()
+
+    def closeEvent(self, event):
+        self.roulette.clearRestaurantList()
+        print(self.roulette.getRestaurantList())

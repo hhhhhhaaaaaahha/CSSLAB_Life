@@ -8,13 +8,13 @@ from src.cleaning_time_table import CleaningTimeTable
 class CleaningTimeTableController(QMainWindow):
     backSignal = QtCore.pyqtSignal()
 
-    def __init__(self):
+    def __init__(self, member):
         super().__init__()
 
         self.setGeometry(100, 100, 950, 1000)
         self.setWindowTitle("Cleaning Time Table")
 
-        self.cleaningTimeTable = CleaningTimeTable()
+        self.cleaningTimeTable = CleaningTimeTable(member)
         self.ui = CleaningTimeTableUI(
             self,
             self.cleaningTimeTable.getMembers(),
@@ -26,5 +26,5 @@ class CleaningTimeTableController(QMainWindow):
         self.ui.retbtn.clicked.connect(self.changeToHomePage)
 
     def changeToHomePage(self):
-        self.close()
+        self.hide()
         self.backSignal.emit()

@@ -8,13 +8,13 @@ from src.school_time_table import SchoolTimeTable
 class SchoolTimeTableController(QMainWindow):
     backSignal = QtCore.pyqtSignal()
 
-    def __init__(self):
+    def __init__(self, member):
         super().__init__()
 
         self.setGeometry(100, 100, 850, 850)
         self.setWindowTitle("School Time Table")
 
-        self.schoolTimeTable = SchoolTimeTable()
+        self.schoolTimeTable = SchoolTimeTable(member)
         self.ui = ShoolTimeTableUI(self)
 
         # ComboBox lisener
@@ -34,5 +34,5 @@ class SchoolTimeTableController(QMainWindow):
         self.ui.change(self.schoolTimeTable.ClassTimeScedual[name])
 
     def changeToHomePage(self):
-        self.close()
+        self.hide()
         self.backSignal.emit()

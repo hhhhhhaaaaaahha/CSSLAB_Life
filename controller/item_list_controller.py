@@ -14,8 +14,6 @@ class ItemListController(QMainWindow):
         self.item_list = ItemList(member)
         self.ui = ItemListUI(self)
 
-        self.item_list = ItemList(self, member)
-
         # Todo
         self.item_label_list = list()
 

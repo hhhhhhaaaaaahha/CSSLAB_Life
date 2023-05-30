@@ -4,9 +4,9 @@ import requests
 class ItemList:
     def __init__(self, member):
         self.member = member
-        self.id_list = self.getItemList(self.member.token)
+        self.id_list = self.getItemList()
 
-    def addItem(self, token: str, information: list):
+    def addItem(self, information: list):
         headers = {"member_id": self.member.token}
         self.id_list = requests.post(
             "http://127.0.0.1:5000/item_list_add_item",

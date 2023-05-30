@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 
 from controller.roulette_controller import RouletteController
 from controller.cleaning_time_table_controller import CleaningTimeTableController
+from controller.item_list_controller import ItemListController
 from controller.meeting_time_table_controller import MeetingTimeTableController
 from controller.school_time_table_controller import SchoolTimeTableController
 from ui.home_page_ui import HomePageUI
@@ -21,11 +22,13 @@ class HomePageController(QMainWindow):
         self.cleaning_time_table_window = CleaningTimeTableController(self.member)
         self.meeting_time_table_window = MeetingTimeTableController(self.member)
         self.school_time_table_window = SchoolTimeTableController(self.member)
+        self.item_list_window = ItemListController(self.member)
 
         self.ui.pushButton.clicked.connect(self.changeToRoulette)
         self.ui.pushButton_2.clicked.connect(self.changeToCleaningTimeTable)
         self.ui.pushButton_3.clicked.connect(self.changeToSchoolTimeTable)
         self.ui.pushButton_4.clicked.connect(self.changeToMeetingTimeTable)
+        self.ui.pushButton_5.clicked.connect(self.changeToItemListTable)
 
     def changeToRoulette(self):
         self.roulette_window.backSignal.connect(self.show)
@@ -48,6 +51,11 @@ class HomePageController(QMainWindow):
         self.school_time_table_window.backSignal.connect(self.show)
         self.hide()
         self.school_time_table_window.show()
+
+    def changeToItemListTable(self):
+        self.item_list_window.backSignal.connect(self.show)
+        self.hide()
+        self.item_list_window.show()
 
     def closeEvent(self, event):
         for window in QApplication.topLevelWidgets():

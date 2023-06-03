@@ -1,6 +1,6 @@
-from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtGui import QFont, QPixmap, QIcon
-from PyQt5.QtWidgets import QGraphicsDropShadowEffect, QLabel, QLineEdit, QMessageBox
+from PyQt5 import QtWidgets
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QGraphicsDropShadowEffect, QLabel, QLineEdit
 
 
 class ItemListUI:
@@ -16,7 +16,7 @@ class ItemListUI:
         self.addbtn.setIcon(QIcon("./img/plus.png"))
         self.addbtn.move(120, 10)
 
-        self.item_labels = list()
+        self.item_labels: list[QLabel, QtWidgets.QPushButton] = list()
 
         self.shadow = QGraphicsDropShadowEffect()
         self.shadow.setBlurRadius(15)
@@ -31,7 +31,6 @@ class AddItemUI(QtWidgets.QMainWindow):
         self.label_list = [(QLabel(self), QLineEdit(self)) for _ in range(5)]
         for index, row in enumerate(self.label_list):
             row[0].setText(column[index])
-            # label.setText(column[index])
             row[0].move(50, 50 + 30 * index)
             row[1].setFixedWidth(130)
             row[1].setFixedHeight(23)

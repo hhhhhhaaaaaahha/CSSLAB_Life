@@ -8,7 +8,7 @@ class ItemList:
 
     # Send add item request to server and sync id_list afterward
     def addItem(self, information: str):
-        headers = {"member_id": self.member.token}
+        headers = {"Member-Id": self.member.token}
         self.id_list = requests.post(
             "http://127.0.0.1:5000/item_list_add_item",
             data={"information": information},
@@ -17,7 +17,7 @@ class ItemList:
 
     # Send delete item request to server and sync id_list afterward
     def deleteItem(self, id: int):
-        headers = {"member_id": self.member.token}
+        headers = {"Member-Id": self.member.token}
         self.id_list = requests.post(
             "http://127.0.0.1:5000/item_list_delete_item",
             data={"id": id},
@@ -26,7 +26,7 @@ class ItemList:
 
     # Request item info by providing item id
     def getItemById(self, id: int):
-        headers = {"member_id": self.member.token}
+        headers = {"Member-Id": self.member.token}
         return requests.post(
             "http://127.0.0.1:5000/item_list_get_item",
             data={"id": id},
@@ -35,7 +35,7 @@ class ItemList:
 
     # Sync item_list with server
     def getItemList(self):
-        headers = {"member_id": self.member.token}
+        headers = {"Member-Id": self.member.token}
         return requests.post(
             "http://127.0.0.1:5000/item_list_get_list",
             headers=headers,

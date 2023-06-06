@@ -6,7 +6,7 @@ class SchoolTimeTable:
         self.member = member
 
     def getMemberClassTimeScedual(self, memberName):
-        headers = {"member_id": self.member.token}
+        headers = {"Member-Id": self.member.token}
 
         return requests.post(
             "http://127.0.0.1:5000/course_get_time",
@@ -15,7 +15,7 @@ class SchoolTimeTable:
         ).json()["time"]
 
     def getAllMembers(self):
-        headers = {"member_id": self.member.token}
+        headers = {"Member-Id": self.member.token}
         return requests.post(
             "http://127.0.0.1:5000/course_get_members",
             headers=headers,

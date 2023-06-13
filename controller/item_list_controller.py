@@ -60,7 +60,6 @@ class ItemListController(QMainWindow):
         self.deleteItemFuncs = []
 
         for index, item_id in enumerate(self.item_list.id_list):
-            print(item_id)
             # Set shadow effect
             shadow = QGraphicsDropShadowEffect()
             shadow.setBlurRadius(15)
@@ -103,7 +102,6 @@ class ItemListController(QMainWindow):
             # Show
             self.ui.item_labels[-1][0].show()
             self.ui.item_labels[-1][1].show()
-        print("\n")
 
     def changeToHomePage(self):
         self.hide()

@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QGraphicsDropShadowEffect, QLabel, QLineEdit
 class BulletinBoardUI:
     def __init__(self, window: QtWidgets.QMainWindow):
         window.setGeometry(0, 0, 800, 600)
-        window.setWindowTitle("Message List")
+        window.setWindowTitle("Bulletin Board")
 
         self.retbtn = QtWidgets.QPushButton(window)
         self.retbtn.setText("返回首頁")
@@ -16,13 +16,13 @@ class BulletinBoardUI:
         self.addbtn.setIcon(QIcon("./img/plus.png"))
         self.addbtn.move(120, 10)
 
-        self.message_labels: list[QLabel, QtWidgets.QPushButton] = list()
+        self.announcement_labels: list[QLabel, QtWidgets.QPushButton] = list()
 
         self.shadow = QGraphicsDropShadowEffect()
         self.shadow.setBlurRadius(15)
 
 
-class AddMessageUI(QtWidgets.QMainWindow):
+class AddAnnouncementUI(QtWidgets.QMainWindow):
     def __init__(self, column):
         super().__init__()
         self.setGeometry(500, 150, 320, 250)

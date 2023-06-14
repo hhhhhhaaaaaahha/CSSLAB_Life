@@ -4,10 +4,10 @@ import requests
 class BulletinBoard:
     def __init__(self, member):
         self.member = member
-        self.id_list = self.getMessageList()
+        self.id_list = self.getAnnouncementList()
 
-    # Send add message request to server and sync id_list afterward
-    def addMessage(self, information: str):
+    # Send add announcement request to server and sync id_list afterward
+    def addAnnouncement(self, information: str):
         headers = {"Member-id": self.member.token}
         self.id_list = requests.post(
             "http://127.0.0.1:5000/bb_list_add_announcement",
@@ -15,8 +15,8 @@ class BulletinBoard:
             headers=headers,
         ).json()["list"]
 
-    # Send delete message request to server and sync id_list afterward
-    def deleteMessage(self, id: int):
+    # Send delete announcement request to server and sync id_list afterward
+    def deleteAnnouncement(self, id: int):
         headers = {"Member-id": self.member.token}
         self.id_list = requests.post(
             "http://127.0.0.1:5000/bb_list_delete_announcement",
@@ -24,8 +24,8 @@ class BulletinBoard:
             headers=headers,
         ).json()["list"]
 
-    # Request message info by providing message id
-    def getMessageById(self, id: int):
+    # Request announcement info by providing announcement id
+    def getAnnouncementById(self, id: int):
         headers = {"Member-id": self.member.token}
         return requests.post(
             "http://127.0.0.1:5000/bb_list_get_announcement",
@@ -33,8 +33,8 @@ class BulletinBoard:
             headers=headers,
         ).json()["info"]
 
-    # Sync message_list with server
-    def getMessageList(self):
+    # Sync announcement_list with server
+    def getAnnouncementList(self):
         headers = {"Member-id": self.member.token}
         return requests.post(
             "http://127.0.0.1:5000/bb_list_get_list",
@@ -50,7 +50,7 @@ class BulletinBoard:
             ).json()["id"]
         )
 
-    def setPinnedMessage(self, id: int):
+    def setPinnedAnnouncement(self, id: int):
         headers = {"Member-id": self.member.token}
         requests.post(
             "http://127.0.0.1:5000/bb_list_pin_announcement",

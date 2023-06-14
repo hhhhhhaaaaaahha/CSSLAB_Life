@@ -28,11 +28,11 @@ class HomePageController(QMainWindow):
 
         self.bulletin_board_window.pinned_signal.connect(self.announcementInfo)
 
-        if self.bulletin_board_window.pinnedId == -1:
+        if self.bulletin_board_window.pinned_id == -1:
             self.ui.annnouncement_label.setText("目前無釘選公告")
         else:
-            text = self.bulletin_board_window.bulletin_board.getMessageById(
-                self.bulletin_board_window.pinnedId
+            text = self.bulletin_board_window.bulletin_board.getAnnouncementById(
+                self.bulletin_board_window.pinned_id
             )[2]
             self.ui.annnouncement_label.setText(text)
 
@@ -82,8 +82,8 @@ class HomePageController(QMainWindow):
     def announcementInfo(self, info):
         print(info)
         if info == "new":
-            text = self.bulletin_board_window.bulletin_board.getMessageById(
-                self.bulletin_board_window.pinnedId
+            text = self.bulletin_board_window.bulletin_board.getAnnouncementById(
+                self.bulletin_board_window.pinned_id
             )[2]
             self.ui.annnouncement_label.setText(text)
         else:

@@ -57,7 +57,7 @@ class ItemListController(QMainWindow):
                 button.hide()
 
         # Clear delete item function that connectedwith each delete button
-        self.deleteItemFuncs = []
+        self.delete_item_funcs = []
 
         for index, item_id in enumerate(self.item_list.id_list):
             # Set shadow effect
@@ -93,8 +93,8 @@ class ItemListController(QMainWindow):
             )
 
             # Config delete button
-            self.deleteItemFuncs.append(partial(self.deleteItemCheck, item_id))
-            self.ui.item_labels[-1][1].clicked.connect(self.deleteItemFuncs[-1])
+            self.delete_item_funcs.append(partial(self.deleteItemCheck, item_id))
+            self.ui.item_labels[-1][1].clicked.connect(self.delete_item_funcs[-1])
             self.ui.item_labels[-1][1].move(
                 200 + 245 * (index % 3), 75 + 245 * (index // 3)
             )

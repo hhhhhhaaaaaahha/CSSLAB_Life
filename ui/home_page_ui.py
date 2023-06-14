@@ -3,14 +3,29 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 class HomePageUI(object):
     def setupUI(self, window):
-        window.setGeometry(0, 0, 800, 600)
+        window.setGeometry(0, 0, 830, 1600)
         window.setObjectName("HomePage")
-        window.resize(800, 600)
+        window.resize(830, 1600)
         # window.setStyleSheet("background-color: rgb(170, 255, 255);")
         self.centralwidget = QtWidgets.QWidget(window)
         self.centralwidget.setObjectName("centralwidget")
+
+        self.annnouncement_label = QtWidgets.QLabel(self.centralwidget)
+        self.annnouncement_label.setFixedWidth(560)
+        self.annnouncement_label.setFixedHeight(130)
+        self.annnouncement_label.move(120, 130)
+        self.annnouncement_label.setStyleSheet(
+            """
+            background-color: rgb(255, 249, 196);
+            border:1px solid #000;
+            font:25pt;
+            font-weight:bold;
+            """
+        )
+        self.annnouncement_label.setAlignment(QtCore.Qt.AlignCenter)
+
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(120, 150, 200, 100))
+        self.pushButton.setGeometry(QtCore.QRect(120, 300, 200, 100))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 170, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -49,9 +64,11 @@ class HomePageUI(object):
         self.pushButton.setStyleSheet("background-color: rgb(255, 170, 0);")
         self.pushButton.setObjectName("pushButton")
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_2.setGeometry(QtCore.QRect(120, 310, 200, 100))
+        self.pushButton_2.setGeometry(QtCore.QRect(120, 460, 200, 100))
         self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_5.setGeometry(QtCore.QRect(120, 470, 200, 100))
+        self.pushButton_5.setGeometry(QtCore.QRect(120, 620, 200, 100))
+        self.pushButton_6 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_6.setGeometry(QtCore.QRect(480, 620, 200, 100))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(25)
@@ -63,8 +80,11 @@ class HomePageUI(object):
         self.pushButton_5.setFont(font)
         self.pushButton_5.setStyleSheet("background-color: rgb(255, 170, 0);")
         self.pushButton_5.setObjectName("pushButton_5")
+        self.pushButton_6.setFont(font)
+        self.pushButton_6.setStyleSheet("background-color: rgb(255, 170, 0);")
+        self.pushButton_6.setObjectName("pushButton_6")
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_3.setGeometry(QtCore.QRect(480, 150, 200, 100))
+        self.pushButton_3.setGeometry(QtCore.QRect(480, 300, 200, 100))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(25)
@@ -74,7 +94,7 @@ class HomePageUI(object):
         self.pushButton_3.setStyleSheet("background-color: rgb(255, 170, 0);")
         self.pushButton_3.setObjectName("pushButton_3")
         self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_4.setGeometry(QtCore.QRect(480, 310, 200, 100))
+        self.pushButton_4.setGeometry(QtCore.QRect(480, 460, 200, 100))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(25)
@@ -94,7 +114,7 @@ class HomePageUI(object):
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(650, 530, 131, 31))
+        self.label_2.setGeometry(QtCore.QRect(720, 715, 131, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -122,16 +142,6 @@ class HomePageUI(object):
         self.pushButton_3.setText(_translate("window", "課表查詢"))
         self.pushButton_4.setText(_translate("window", "Meeting時間表"))
         self.pushButton_5.setText(_translate("window", "購物清單"))
+        self.pushButton_6.setText(_translate("window", "即時看板"))
         self.label.setText(_translate("window", "CSS Lab Life "))
-        self.label_2.setText(_translate("window", "2023.4.27_v1"))
-
-
-# if __name__ == "__main__":
-#     import sys
-
-#     app = QtWidgets.QApplication(sys.argv)
-#     window = QtWidgets.QMainWindow()
-#     ui = HomePageUI()
-#     ui.setupUI(window)
-#     window.show()
-#     sys.exit(app.exec_())
+        self.label_2.setText(_translate("window", "2023.6.13_v2"))

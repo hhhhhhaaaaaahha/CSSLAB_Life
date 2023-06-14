@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
 from controller.roulette_controller import RouletteController
+from controller.bulletin_board_controller import BulletinBoardController
 from controller.cleaning_time_table_controller import CleaningTimeTableController
 from controller.item_list_controller import ItemListController
 from controller.meeting_time_table_controller import MeetingTimeTableController
@@ -19,16 +20,28 @@ class HomePageController(QMainWindow):
 
     def setInitUI(self):
         self.roulette_window = RouletteController(self.member)
+        self.bulletin_board_window = BulletinBoardController(self.member)
         self.cleaning_time_table_window = CleaningTimeTableController(self.member)
         self.meeting_time_table_window = MeetingTimeTableController(self.member)
         self.school_time_table_window = SchoolTimeTableController(self.member)
         self.item_list_window = ItemListController(self.member)
+
+        self.bulletin_board_window.pinned_signal.connect(self.announcementInfo)
+
+        if self.bulletin_board_window.pinnedId == -1:
+            self.ui.annnouncement_label.setText("目前無釘選公告")
+        else:
+            text = self.bulletin_board_window.bulletin_board.getMessageById(
+                self.bulletin_board_window.pinnedId
+            )[2]
+            self.ui.annnouncement_label.setText(text)
 
         self.ui.pushButton.clicked.connect(self.changeToRoulette)
         self.ui.pushButton_2.clicked.connect(self.changeToCleaningTimeTable)
         self.ui.pushButton_3.clicked.connect(self.changeToSchoolTimeTable)
         self.ui.pushButton_4.clicked.connect(self.changeToMeetingTimeTable)
         self.ui.pushButton_5.clicked.connect(self.changeToItemListTable)
+        self.ui.pushButton_6.clicked.connect(self.changeToBulletinBoard)
 
     def changeToRoulette(self):
         self.roulette_window.backSignal.connect(self.show)
@@ -36,6 +49,11 @@ class HomePageController(QMainWindow):
         self.roulette_window.show()
         self.roulette_window.mModified = True
         self.roulette_window.update()
+
+    def changeToBulletinBoard(self):
+        self.bulletin_board_window.backSignal.connect(self.show)
+        self.hide()
+        self.bulletin_board_window.show()
 
     def changeToCleaningTimeTable(self):
         self.cleaning_time_table_window.backSignal.connect(self.show)
@@ -60,3 +78,13 @@ class HomePageController(QMainWindow):
     def closeEvent(self, event):
         for window in QApplication.topLevelWidgets():
             window.close()
+
+    def announcementInfo(self, info):
+        print(info)
+        if info == "new":
+            text = self.bulletin_board_window.bulletin_board.getMessageById(
+                self.bulletin_board_window.pinnedId
+            )[2]
+            self.ui.annnouncement_label.setText(text)
+        else:
+            self.ui.annnouncement_label.setText("目前無釘選公告")
